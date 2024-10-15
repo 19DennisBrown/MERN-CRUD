@@ -1,4 +1,5 @@
-import { useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 
@@ -6,33 +7,48 @@ import { Link } from "react-router-dom";
 const Users = () => {
 
   const [users, setUsers] = useState([
-      {
-        Name: "Alice Johnson",
-        Email: "alice.johnson@example.com",
-        Age: 28,
-      },
-      {
-        Name: "Bob Smith",
-        Email: "bob.smith@example.com",
-        Age: 35,
-      },
-      {
-        Name: "Charlie Davis",
-        Email: "charlie.davis@example.com",
-        Age: 22,
-      },
-      {
-        Name: "Diana Evans",
-        Email: "diana.evans@example.com",
-        Age: 30,
-      },
-      {
-        Name: "Evan Parker",
-        Email: "evan.parker@example.com",
-        Age: 40,
-      }
+      // {
+      //   Name: "Alice Johnson",
+      //   Email: "alice.johnson@example.com",
+      //   Age: 28,
+      // },
+      // {
+      //   Name: "Bob Smith",
+      //   Email: "bob.smith@example.com",
+      //   Age: 35,
+      // },
+      // {
+      //   Name: "Charlie Davis",
+      //   Email: "charlie.davis@example.com",
+      //   Age: 22,
+      // },
+      // {
+      //   Name: "Diana Evans",
+      //   Email: "diana.evans@example.com",
+      //   Age: 30,
+      // },
+      // {
+      //   Name: "Evan Parker",
+      //   Email: "evan.parker@example.com",
+      //   Age: 40,
+      // }
     
   ])
+
+  const handleFetch =  ()=>{
+    axios.get('http://localhost:5000')
+    .then((res)=> {
+      console.log(res.data)
+      setUsers(res.data)
+    })
+  }
+
+  useEffect(() => {
+    handleFetch()
+  }, [])
+  
+
+
   return ( 
     <main className="d-flex vh-100 bg-primary justify-content-center align-items-center text-center px-3">
       <div className="w-50 bg-white rounded p-3">
@@ -49,9 +65,9 @@ const Users = () => {
           <tbody>
             {users.map((user)=>{
               return <tr key={user.Name}>
-                <td>{user.Name}</td>
-                <td>{user.Email}</td>
-                <td>{user.Age}</td>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.age}</td>
                 <td>
                   <button className="btn btn-secondary">
                     <Link to="/update" >update</Link>
