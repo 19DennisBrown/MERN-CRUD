@@ -36,7 +36,7 @@ const Users = () => {
   ])
 
   const handleFetch =  ()=>{
-    axios.get('http://localhost:5000')
+    axios.get(`http://localhost:5000`)
     .then((res)=> {
       console.log(res.data)
       setUsers(res.data)
@@ -46,12 +46,19 @@ const Users = () => {
   useEffect(() => {
     handleFetch()
   }, [])
-  
 
 
+  const handleDelete =(id)=>{
+    axios.delete('http://localhost:5000/deleteUser/'+id)
+    .then((res)=>{
+      console.log(res)
+      window.location.reload()
+    })
+    .catch((err)=> console.log(err))
+  }
   return ( 
-    <main className="d-flex vh-100 bg-primary justify-content-center align-items-center text-center px-3">
-      <div className="w-50 bg-white rounded p-3">
+    <main className="d-flex vh-100  bg-primary justify-content-center align-items-center text-center px-3">
+      <div className="w-[80vw] bg-white rounded p-3">
         <Link to="/create" className="btn btn-success">Add +</Link>
         <table className="table">
           <thead>
@@ -64,15 +71,17 @@ const Users = () => {
           </thead>
           <tbody>
             {users.map((user)=>{
-              return <tr key={user.Name}>
+              return <tr key={user._id}>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.age}</td>
-                <td>
+                <td className="grid grid-cols-2 gap-8 bg-gray-200">
                   <button className="btn btn-secondary">
-                    <Link to="/update" >update</Link>
+                    <Link to={`/update/${user._id}`} >update</Link>
                   </button>
-                  <button className="btn btn-danger">delete</button>
+                  <button className="btn btn-danger" onClick={ ()=> handleDelete(user._id) } >
+                    delete
+                  </button>
                 </td>
               </tr>
             })}
